@@ -1,24 +1,6 @@
-import base64
 import streamlit as st
 import sqlite3
 
-
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        images = f.read()
-    return base64.b64encode(images).decode()
-
-def set_png_as_page_bg(png_file):
-    bin_str = get_base64_of_bin_file(png_file)
-    page_bg_img = f"""
-        <style>
-        body {{
-            background-image: url("images:1.jpg;base64,{bin_str}");
-            background-size: cover;
-        }}
-        </style>
-    """
-    st.markdown(page_bg_img, unsafe_allow_html=True)
 def create_table():
     conn = sqlite3.connect('user_database.db')
     cursor = conn.cursor()
@@ -117,8 +99,7 @@ def leadership_page():
                 "Ayrıca, İspanyol yönetim kurullarındaki kadınların yüzdesinin firma değeri üzerinde pozitif bir etkisi olduğunu öne sürdüler.")
 
     st.subheader("SheNexTech KADIN GİRİŞİMCİLERİ NASIL DESTEKLİYOR?")
-    st.markdown("Mentorluk ve Ağ Oluşturma:Mentor bulma özelliği ile kadın girişimcilere deneyimli mentörlerle bağlantı kurma imkanı sunarak, onlara rehberlik ve destek sağlamak.
-"Etkinlikler kısmında düzenlenen etkinlikler aracılığıyla kadın girişimcilerin bir araya gelmelerini ve işbirlikleri oluşturmalarını teşvik etmek.")
+    st.markdown("Mentorluk ve Ağ Oluşturma:Mentor bulma özelliği ile kadın girişimcilere deneyimli mentörlerle bağlantı kurma imkanı sunarak, onlara rehberlik ve destek sağlamak. Etkinlikler kısmında düzenlenen etkinlikler aracılığıyla kadın girişimcilerin bir araya gelmelerini ve işbirlikleri oluşturmalarını teşvik etmek.")
 
     st.subheader("Mağaza ve Pazar Yeri:Mağaza kısmı girişimlere özel olarak, kadın girişimcilerin ürün veya hizmetlerini sergileyebilecekleri bir pazar yeri oluşturarak görünürlüklerini artırmak.")
 
@@ -145,6 +126,33 @@ def token_architecture_page():
 
     Token mimarimiz, platformumuzun katılımcı ve adil bir yapıya sahip olmasını sağlarken aynı zamanda kadın girişimcilerin güçlenmesine odaklanmıştır. Token sahipleri olarak sizler, platformun gerçek sahipleri ve yönlendiricilerisiniz. Birlikte, kadın girişimciliğinin yeni ve güçlü bir dönemini inşa etmek için adım atıyoruz.
     """)
+def register_token(email, password, token_value):
+    conn_1 = sqlite3.connect('token_database.db')
+    cursor_1 = conn_1.cursor()
+
+    cursor_1.execute('''
+        INSERT INTO users (email, password, token_value) VALUES (?, ?, ?)
+    ''', (email, password, token_value))
+
+    conn_1.commit()
+    conn_1.close()
+
+    st.success("Token Alımı Gerçekleşti!")
+
+def token_alma_page():
+    st.header("Bianance Cüzdanı")
+    st.header("Aşağıdaki formu kullanarak sanal cüzdanınıza token yükleyebilirsiniz.")
+    email = st.text_input("E-posta:")
+    password = st.text_input("Şifre:", type='password')
+    token_value = st.text_input("Token Miktarı")
+
+    if st.button("Token Al"):
+        if not email or not password or token_value <= 0:
+            st.error("Lütfen tüm bilgileri doldurun ve geçerli bir token miktarı girin.")
+        else:
+            register_token(email, password, token_value)
+
+
 
 # 21 ve 22 görseller eklenecek bu token_arhitecture sayfasına
 def register_page():
@@ -159,7 +167,7 @@ def register_page():
             register(email, password)
 
 def main():
-    page_options = ["Ana Sayfa", "Kadınların Sektörde Yaşadığı Zorluklar", "Sektörde Kadının Liderliği", "Token Mimarisi", "Kayıt Ol"]
+    page_options = ["Ana Sayfa", "Kadınların Sektörde Yaşadığı Zorluklar", "Sektörde Kadının Liderliği", "Token Mimarisi", "Kayıt Ol", "Token Alma"]
     selected_page = st.sidebar.selectbox("Sayfa Seç", page_options)
 
     if selected_page == "Ana Sayfa":
@@ -172,17 +180,12 @@ def main():
         token_architecture_page()
     elif selected_page == "Kayıt Ol":
         register_page()
-
-page_bg_img="""
-    <style>
-    background-image: url("images/1.jpg");
-    background-size: cover;
-    </style>
-    """
-st.markdown(page_bg_img, unsafe_allow_html=True)
+    elif selected_page == "Token Alma":
+        token_alma_page()
 
 if __name__ == "__main__":
     create_table()
     main()
+
 
 
