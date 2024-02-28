@@ -174,6 +174,13 @@ def passport_page():
     st.write("**Profil fotoğrafı yükle.**")
     st.write("**Telefon numaranı doğrula.**")
     st.write("**Binance cüzdanını bağla.**")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
     st.markdown("Seviye 2")
     st.write("**50$ token yükle.**")
 
