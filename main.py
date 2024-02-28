@@ -178,9 +178,6 @@ def passport_page():
     st.write("")
     st.write("")
     st.write("")
-    st.write("")
-    st.write("")
-    st.write("")
     st.markdown("Seviye 2")
     st.write("**50$ token yükle.**")
 
