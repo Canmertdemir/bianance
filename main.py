@@ -171,11 +171,12 @@ def register_page():
 def passport_page():
     st.header("Missions")
     st.markdown("Seviye 1")
-    st.write("Profil fotoğrafı yükle.")
-    st.write( "Telefon numaranı doğrula.")
-    st.write(" Binance cüzdanını bağla.")
+    st.write("**Profil fotoğrafı yükle.**")
+    st.write("**Telefon numaranı doğrula.**")
+    st.write("**Binance cüzdanını bağla.**")
     st.markdown("Seviye 2")
-    st.write("50$ token yükle.")
+    st.write("**50$ token yükle.**")
+
 
 
 def main():
