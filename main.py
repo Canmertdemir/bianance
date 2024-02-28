@@ -30,6 +30,7 @@ def register(email, password):
     st.success("Başarıyla kayıt oldunuz!")
 
 def home_page():
+
     st.header("Ana Sayfa")
     st.write("Web3 ve blockchain teknolojileriyle güçlendirilmiş platformumuz,"
              " girişimciliğinizi desteklemek ve büyütmek için tasarlandı."
@@ -166,8 +167,20 @@ def register_page():
         else:
             register(email, password)
 
+
+def passport_page():
+    st.header("Missions")
+    st.markdown("Seviye 1")
+    st.write("Profil fotoğrafı yükle.")
+    st.write( "Telefon numaranı doğrula.")
+    st.write(" Binance cüzdanını bağla.")
+    st.markdown("Seviye 2")
+    st.write("50$ token yükle.")
+
+
 def main():
-    page_options = ["Ana Sayfa", "Kadınların Sektörde Yaşadığı Zorluklar", "Sektörde Kadının Liderliği", "Token Mimarisi", "Kayıt Ol", "Token Alma"]
+    st.sidebar.title("Navigation")
+    page_options = ["Ana Sayfa", "Kadınların Sektörde Yaşadığı Zorluklar", "Sektörde Kadının Liderliği", "Token Mimarisi", "Kayıt Ol", "Token Alma", "Passport"]
     selected_page = st.sidebar.selectbox("Sayfa Seç", page_options)
 
     if selected_page == "Ana Sayfa":
@@ -182,6 +195,8 @@ def main():
         register_page()
     elif selected_page == "Token Alma":
         token_alma_page()
+    elif selected_page == "Passport":
+        passport_page()
 
 if __name__ == "__main__":
     create_table()
