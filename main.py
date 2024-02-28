@@ -15,7 +15,6 @@ def create_table():
 
     conn.commit()
     conn.close()
-
 def register(email, password):
     conn = sqlite3.connect('user_database.db')
     cursor = conn.cursor()
@@ -127,18 +126,48 @@ def token_architecture_page():
 
     Token mimarimiz, platformumuzun katılımcı ve adil bir yapıya sahip olmasını sağlarken aynı zamanda kadın girişimcilerin güçlenmesine odaklanmıştır. Token sahipleri olarak sizler, platformun gerçek sahipleri ve yönlendiricilerisiniz. Birlikte, kadın girişimciliğinin yeni ve güçlü bir dönemini inşa etmek için adım atıyoruz.
     """)
+def create_tables_2():
+    conn = sqlite3.connect('user_database.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT,
+            password TEXT,
+            token INT
+        )
+    ''')
+
+    conn.commit()
+    conn.close()
+
+    conn_token = sqlite3.connect('token_database.db')
+    cursor_token = conn_token.cursor()
+
+    cursor_token.execute('''
+        CREATE TABLE IF NOT EXISTS tokens (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT,
+            token_value INT
+        )
+    ''')
+
+    conn_token.commit()
+    conn_token.close()
 def register_token(email, password, token_value):
     conn_1 = sqlite3.connect('token_database.db')
     cursor_1 = conn_1.cursor()
 
     cursor_1.execute('''
-        INSERT INTO users (email, password, token_value) VALUES (?, ?, ?)
+        INSERT INTO users (email, password, token) VALUES (?, ?, ?)
     ''', (email, password, token_value))
 
     conn_1.commit()
     conn_1.close()
 
     st.success("Token Alımı Gerçekleşti!")
+
 
 def token_alma_page():
     st.header("Bianance Cüzdanı")
@@ -206,6 +235,7 @@ def main():
 if __name__ == "__main__":
     create_table()
     main()
+    create_tables_2()
 
 
 
